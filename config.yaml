@@ -1,1 +1,17 @@
-
+reporting:
+  enabled: true
+  channel: '1161675989961670746'
+profanity:
+  enabled: true
+  use-library: true
+  words: []
+  warn:
+    enabled: true
+    message: 'Please refrain from using profanity.'
+    threshold: 3
+spam:
+  enabled: true
+  words: []
+  threshold: 3
+  time: 10
+  ban: false

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 const YAML = require('yaml');
+const badWords = require('bad-words');
 
 const config = YAML.parse(fs.readFileSync('./config.yaml', 'utf8'));
 
