@@ -1,13 +1,47 @@
 require('dotenv').config();
 const fs = require('fs');
 const YAML = require('yaml');
-const badWords = require('bad-words');
 
 const config = YAML.parse(fs.readFileSync('./config.yaml', 'utf8'));
+
+let filter;
+if (config.profanity.enabled) {
+	const badWords = require('bad-words');
+	filter = new badWords();
+	filter.addWords(...config.profanity.words);
+}
 
 const Discord = require('./discord');
 const discordClient = new Discord(config, process.env.DISCORD_TOKEN);
 
+const report = config.reporting.enabled;
+let reportChannel;
+if (report) {
+	reportChannel = discordClient.channels.cache.get(config.reporting.channel);
+}
+
 discordClient.on('message', message => {
-	//console.log('Got message', message.content);
+	// ignore messages from bots
+	if (config['ignore-bots'] && message.author.bot) {
+		return;
+	}
+
+	const channel = message.channel;
+	const channelNSFW = channel.nsfw;
+
+	// check for profanity if enabled
+	if (filter && (!config.profanity['exclude-nsfw'] || !channelNSFW) && filter.isProfane(message.content)) {
+		// report profanity
+		if (reportChannel) {
+			reportChannel.send(`Profanity detected in ${message.channel} by ${message.author}: \`${message.content}\``);
+		}
+		// delete the message if enabled
+		if (config.profanity.delete) {
+			message.delete();
+		}
+		// warn the offender if enabled
+		if (config.profanity.warn.enabled) {
+			message.author.send(config.profanity.warn.message);
+		}
+	}
 });
