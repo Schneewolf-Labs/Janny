@@ -27,6 +27,10 @@ class Discord extends EventEmitter {
 		//const channel = this.client.channels.cache.get(this.channel);
 		//channel.send(message);
 	}
+
+	getChannel(id) {
+		return this.client.channels.cache.get(id);
+	}
 }
 
 module.exports = Discord;
