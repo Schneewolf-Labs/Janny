@@ -35,13 +35,13 @@ discordClient.on('message', message => {
 		if (reportChannel) {
 			reportChannel.send(`Profanity detected in ${message.channel} by ${message.author}: \`${message.content}\``);
 		}
+		// warn the offender if enabled
+		if (config.profanity.warn.enabled) {
+			message.reply(config.profanity.warn.message);
+		}
 		// delete the message if enabled
 		if (config.profanity.delete) {
 			message.delete();
-		}
-		// warn the offender if enabled
-		if (config.profanity.warn.enabled) {
-			message.author.send(config.profanity.warn.message);
 		}
 	}
 });
