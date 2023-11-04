@@ -17,7 +17,9 @@ const discordClient = new Discord(config, process.env.DISCORD_TOKEN);
 const report = config.reporting.enabled;
 let reportChannel;
 if (report) {
-	reportChannel = discordClient.getChannel(config.reporting.channel);
+	discordClient.on('ready', () => {
+		reportChannel = discordClient.getChannel(config.reporting.channel);
+	});
 }
 
 discordClient.on('message', message => {

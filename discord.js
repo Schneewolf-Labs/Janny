@@ -10,6 +10,7 @@ class Discord extends EventEmitter {
 
 		this.client.once(Events.ClientReady, c => {
 			console.log(`Discord Ready! Logged in as ${c.user.tag}`);
+			this.emit('ready');
 		});
 
 		this.client.on(Events.MessageCreate, message => {
