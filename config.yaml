@@ -15,6 +15,6 @@ spam:
   words: []
   threshold: 3
   time: 10
-  delete: true
+  delete: false
   ban: false
 ignore-bots: true
