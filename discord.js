@@ -13,6 +13,11 @@ class Discord extends EventEmitter {
 			this.emit('ready');
 		});
 
+		// an 'error' event with no listener throws and takes the bot down
+		this.client.on(Events.Error, err => {
+			console.error(`Discord client error: ${err.message}`);
+		});
+
 		this.client.on(Events.MessageCreate, message => {
 			this.emit('message', message);
 		});
@@ -21,7 +26,10 @@ class Discord extends EventEmitter {
 	}
 
 	connect() {
-		this.client.login(this.token);
+		this.client.login(this.token).catch(err => {
+			console.error(`Discord login failed: ${err.message}`);
+			process.exit(1);
+		});
 	}
 
 	send(message) {
