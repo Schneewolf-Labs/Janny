@@ -1,6 +1,7 @@
 reporting:
   enabled: true
   channel: '1161675989961670746'
+  log: 'janny-reports.jsonl'
 profanity:
   enabled: true
   words: []
@@ -14,5 +15,6 @@ spam:
   words: []
   threshold: 3
   time: 10
+  delete: false
   ban: false
 ignore-bots: true
